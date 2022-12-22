@@ -6,8 +6,12 @@ import reportWebVitals from "./reportWebVitals";
 import Layout from "./Pages/Layout";
 import ErrorPage from "./Pages/ErrorPage";
 import EmployeeList from "./Pages/EmployeeList";
+import EquipmentList from "./Pages/EquipmentList";
 import EmployeeCreator from "./Pages/EmployeeCreator";
+import EquipmentCreator from "./Pages/EquipmentCreator";
 import EmployeeUpdater from "./Pages/EmployeeUpdater";
+import EquimentUpdater from "./Pages/EquipmentUpdater";
+import GetRobert from "./Pages/GetRobert";
 
 import "./index.css";
 import TableTest from "./Pages/TableTest";
@@ -24,12 +28,28 @@ const router = createBrowserRouter([
         element: <EmployeeList />,
       },
       {
+        path: "/robert",
+        element: <GetRobert />,
+      },
+      {
         path: "/create",
         element: <EmployeeCreator />,
       },
       {
+        path: "/createEquipment",
+        element: <EquipmentCreator />
+      },
+      {
+        path: "/equipment",
+        element: <EquipmentList/>
+      },
+      {
         path: "/update/:id",
         element: <EmployeeUpdater />,
+      },
+      {
+        path: "/updateEquipment/:id",
+        element: <EquimentUpdater />
       },
       {
         path: "/table-test",

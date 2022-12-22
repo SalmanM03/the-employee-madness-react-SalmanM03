@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import Loading from "../Components/Loading";
-import EmployeeTable from "../Components/EmployeeTable";
+import EquipmentTable from "../Components/EquipmentTable/EquipmentTable";
 import "./Employee.css";
 
-const fetchEmployees = (signal) => {
-  return fetch("/api/employees", { signal }).then((res) => res.json());
+const fetchEquipment = (signal) => {
+  return fetch("/api/equipment", { signal }).then((res) => res.json());
 };
 
-const deleteEmployee = (id) => {
-  return fetch(`/api/employees/${id}`, { method: "DELETE" }).then((res) =>
+const deleteEquipment = (id) => {
+  return fetch(`/api/equipment/${id}`, { method: "DELETE" }).then((res) =>
     res.json()
   );
 };
@@ -16,10 +16,9 @@ const deleteEmployee = (id) => {
 const EmployeeList = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
-  console.log(data)
 
   const handleDelete = (id) => {
-    deleteEmployee(id).catch((err) => {
+    deleteEquipment(id).catch((err) => {
       console.log(err);
     });
 
@@ -34,7 +33,7 @@ const EmployeeList = () => {
 function setFetch(){
   const controller = new AbortController();
 
-  fetchEmployees(controller.signal)
+  fetchEquipment(controller.signal)
     .then((employees) => {
       setLoading(false);
       setData(employees);
@@ -55,8 +54,8 @@ async function handleClickLevel(e){
     }  
     const level = await(
     await fetch(`http://localhost:8080/api/level/${e.target.value}`)
-  ).json()
-setData(level);
+    ).json()
+      setData(level);
 }
 
 async function handleClickPosition(e){
@@ -71,8 +70,9 @@ setData(position)
 }
 async function orderBy(e){
 
+ 
   if(e.target.value === "Name"){
-    const orderLevel = await (await fetch(`/api/s/${e.target.value}`)
+    const orderLevel = await (await fetch(`/api/sort/${e.target.value}`)
     ).json();
     setData(orderLevel)
     console.log(orderLevel)
@@ -109,7 +109,7 @@ async function orderBy(e){
         <option >Level</option>
         <option >Position</option>        
       </select>
-  <EmployeeTable employees={data} onDelete={handleDelete} />;
+  <EquipmentTable equipments={data} onDelete={handleDelete} />
   </>
 
 };
