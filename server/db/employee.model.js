@@ -1,4 +1,4 @@
-// https://mongoosejs.com/
+  // https://mongoosejs.com/
 const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
@@ -9,7 +9,7 @@ const EmployeeSchema = new Schema({
   position: String,
   created: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
 });
 
