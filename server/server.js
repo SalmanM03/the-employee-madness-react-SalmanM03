@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const EmployeeModel = require("./db/employee.model");
 const EquipmentModel = require("./db/equipment.model");
-const { collection } = require("./db/employee.model");
+
 
 const { MONGO_URL, PORT = 8080 } = process.env;
 
@@ -19,7 +19,6 @@ app.use(cors({
   origin: "*",
 }))
 app.use(express.json());
-
 
 app.use("/api/employees/:id", async (req, res, next) => {
   let employee = null;
@@ -38,7 +37,6 @@ app.use("/api/employees/:id", async (req, res, next) => {
   next();
 });
 
-
 app.use("/api/equipment/:id", async (req, res, next) => {
   let equipment = null;
 
@@ -56,9 +54,6 @@ app.use("/api/equipment/:id", async (req, res, next) => {
   next();
 });
 
-
-
-
 app.get("/api/employees/", async (req, res) => {
   const employees = await EmployeeModel.find().sort({ created: "desc" });  
   return res.json(employees);
@@ -68,54 +63,83 @@ app.get("/api/employees/:id", (req, res) => {
   return res.json(req.employee);
 });
 
-app.post("/api/employees/", async (req, res, next) => {
-  const employee = req.body;
-
-  try {
-    const saved = await EmployeeModel.create(employee);
-    return res.json(saved);
-  } catch (err) {
-    return next(err);
-  }
-});
-
-app.patch("/api/employees/:id", async (req, res, next) => {
-  const employee = req.body;
-
-  try {
-    const updated = await req.employee.set(employee).save();
-    return res.json(updated);
-  } catch (err) {
-    return next(err);
-  }
-});
-
-app.delete("/api/employees/:id", async (req, res, next) => {
-  try {
-    const deleted = await req.employee.delete();
-    return res.json(deleted);
-  } catch (err) {
-    return next(err);
-  }
-});
+app.post("/api/employees/", async (req, res, next) =>{
+    const employee = req.body;
+  
+    try {
+      const saved = await EmployeeModel.create(employee);
+      return res.json(saved);
+    } catch (err) {
+      return next(err);
+    }
+  });
 
 
+  app.patch("/api/employees/:id", async (req, res, next) => {
+    const employee = req.body;
+  
+    try {
+      const updated = await req.employee.set(employee).save();
+      return res.json(updated);
+    } catch (err) {
+      return next(err);
+    }
+  });
 
 
+  app.delete("/api/employees/:id", async (req, res, next) => {
+    try {
+      const deleted = await req.employee.delete();
+      return res.json(deleted);
+    } catch (err) {
+      return next(err);
+    }
+  });
 
+app.get('/getRobert', async (req, res) => {
+  const getNameRobert = await EmployeeModel.find({name:{$regex: "Robert", $options: "i"}})
+  res.send(getNameRobert)
+})
+
+app.get('/filterByLevel/:level', async (req, res) => {
+  const filterName = await EmployeeModel.find({level:{$regex:`${req.params.level}`, $options: "i"}}).sort({created: "desc" });
+  res.send(filterName)
+
+})
+
+app.get('/filterByPosition/:position', async (req, res) => {
+  const filterPosition = await EmployeeModel.find({position:{$regex: `${req.params.position}`, $options: "i"}}).sort({created: "desc"})
+  res.send(filterPosition)
+})
+app.get('/filterByName/:name', async (req, res) => {
+  const filterName = await EmployeeModel.find({name:{$regex: `${req.params.name}`, $options: "i"}}).sort({created: "desc"})
+  res.send(filterName)
+})
+
+app.get('/sortByName/:name', async (req, res) => {
+  const sortByName = await EmployeeModel.find().sort({name:1})
+  res.send(sortByName)
+})
+app.get('/sortByPosition/:position', async (req, res) => {
+  const sortPosition = await EmployeeModel.find().sort({position:1})
+  res.send(sortPosition)
+})
+app.get('/sortByLevel/:level', async (req, res) => {
+  const sortLevel = await EmployeeModel.find().sort({level:1})
+  res.send(sortLevel)
+})
 
 
 
 app.get('/api/equipment', async (req, res) => {
-  const equipment = await EquipmentModel.find().sort({ created: "desc" });  
-  return res.json(equipment);
-});
-
+  const equipment = await EquipmentModel.find({}).sort({ created: "desc" }); 
+  return res.json(equipment)
+})
 app.get("/api/equipment/:id", (req, res) => {
   return res.json(req.equipment);
 });
 
-app.post('/api/equipment', async (req, res, next) => {
+app.post("/api/equipment", async (req, res, next) =>{
   const equipment = req.body;
 
   try {
@@ -147,47 +171,33 @@ app.delete("/api/equipment/:id", async (req, res, next) => {
 });
 
 
+app.get('/EmployeeData/:years', async(req, res) => {
+
+  
 
 
-
-
-
-
-
-
-
-
-app.get('/api/level/:level', async(req, res) => {
-  const employees = await EmployeeModel.find({level: {$regex:`${req.params.level}`, $options:"i"}}).sort({ created: "desc" });
-  res.send(employees);
-});
-
-app.get('/api/position/:position', async(req, res) => {
-  const employees = await EmployeeModel.find({position: {$regex:`${req.params.position}`, $options:"i"}}).sort({ created: "desc" });
-  res.send(employees);
-});
-app.get('/api/sort/level', async(req, res) => {
-  const sortLevel= await EmployeeModel.find().sort({level: 1})
-  res.send(sortLevel)
+  if(req.params.years !== "undefined"){
+    const years = parseInt(req.params.years)
+    const data = await EmployeeModel.find({years}).sort()
+    res.json(data)
+  } else{
+    const employees = await EmployeeModel.find().sort()
+    res.send(employees)
+  }
 })
 
-app.get('/api/sort/position', async(req, res) => {
-  const sortPosition= await EmployeeModel.find().sort({position: 1})
-  console.log(sortPosition)
-  res.send(sortPosition)
+app.get('/EmployeeData/sortByNameASC/:name', async(req, res) => {
+  const name = await EmployeeModel.find().sort({name:1})
+  res.send(name)
 })
 
-app.get('/api/s/name', async(req, res) => {
-  const sortName= await EmployeeModel.find().sort({name: 1})
-  console.log(sortName)
-  res.send(sortName)
+app.get('/EmployeeData/sortByNameDESC/:name', async(req, res) => {
+  const name = await EmployeeModel.find().sort({name:-1})
+  res.send(name)
 })
 
-app.get("/robert", async(req, res) => {
-  const employeeRobert = await EmployeeModel.find({name: {$regex:"Robert", $options:"i"}});
-  console.log(employeeRobert)
-  res.send(employeeRobert)
-});
+
+
 
 const main = async () => {
   await mongoose.connect(MONGO_URL);

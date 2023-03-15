@@ -48,47 +48,44 @@ function setFetch(){
 
   return () => controller.abort();
 }
-async function handleClickLevel(e){
-    if(e.target.value.length <= 2){
-      setFetch();
-      return
-    }  
-    const level = await(
-    await fetch(`http://localhost:8080/api/level/${e.target.value}`)
-  ).json()
-setData(level);
+async function filterByLevel(e){
+  const getData = await fetch(`/filterByLevel/${e.target.value}`);
+  const getFetchedData = await getData.json() 
+  setData(getFetchedData)
 }
 
-async function handleClickPosition(e){
-  if(e.target.value.length <= 2){
-    setFetch();
-    return
-  }
-const position = await(
-  await fetch(`http://localhost:8080/api/position/${e.target.value}`)
-).json()
-setData(position)
+async function filterByPosition(e){
+  const fetchData = await fetch(`/filterByPosition/${e.target.value}`);
+  const getFetchedData = await fetchData.json();
+  console.log("Hallo World", fetchData )
+  setData(getFetchedData)
 }
-async function orderBy(e){
 
+async function filterByName(e){
+  const name = await fetch(`/filterByName/${e.target.value}`)
+  const getName = await name.json();
+  setData(getName)
+}
+
+async function handleClick(e){
   if(e.target.value === "Name"){
-    const orderLevel = await (await fetch(`/api/s/${e.target.value}`)
-    ).json();
-    setData(orderLevel)
-    console.log(orderLevel)
-  }
- 
-  else if(e.target.value === "Level"){
-    const orderName = await (await fetch(`/api/sort/${e.target.value}`)
-    ).json();
-    setData(orderName)
+    const fetchData = await fetch(`/sortByName/${e.target.value}`);
+    const getFetchedData = await fetchData.json()
+    setData(getFetchedData)
   }
   else if(e.target.value === "Position"){
-    const orderPosition = await (await fetch(`/api/sort/${e.target.value}`)
-    ).json();
-    setData(orderPosition)
+    const fetchData = await fetch(`/sortByPosition/${e.target.value}`);
+    const getFetchedData = await fetchData.json()
+    setData(getFetchedData)
+  }
+  else if(e.target.value === "Level"){
+    const fetchData = await fetch(`/sortByLevel/${e.target.value}`);
+    const getFetchedData = await fetchData.json()
+    setData(getFetchedData)
   }
 }
+
+
 
   useEffect(() => {
     setFetch();
@@ -99,16 +96,19 @@ async function orderBy(e){
     return <Loading />;
   }
   return<>
-     <div className="flexbox-container">
-        <input placeholder="sarch for level" onChange={handleClickLevel} className="inputfield"></input>
-        <input placeholder="sarch for position" onChange={handleClickPosition} className="inputfield"></input>
-    </div>
-    <select onChange={orderBy}>
-        <option> </option>
-        <option>Name</option>
-        <option >Level</option>
-        <option >Position</option>        
-      </select>
+  <input type="text" placeholder="search for Level" onChange={filterByLevel}></input>
+  <input type="text" placeholder="search for Position" onChange={filterByPosition}></input>
+  <input type="text" placeholder="search for Name" onChange={filterByName}></input>
+
+
+  <select onChange={handleClick}>
+      <option></option>
+      <option>Name</option>
+      <option>Level</option>
+      <option>Position</option> 
+  </select>
+
+
   <EmployeeTable employees={data} onDelete={handleDelete} />;
   </>
 

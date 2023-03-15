@@ -6,16 +6,17 @@ import reportWebVitals from "./reportWebVitals";
 import Layout from "./Pages/Layout";
 import ErrorPage from "./Pages/ErrorPage";
 import EmployeeList from "./Pages/EmployeeList";
-import EquipmentList from "./Pages/EquipmentList";
 import EmployeeCreator from "./Pages/EmployeeCreator";
-import EquipmentCreator from "./Pages/EquipmentCreator";
 import EmployeeUpdater from "./Pages/EmployeeUpdater";
-import EquimentUpdater from "./Pages/EquipmentUpdater";
-import GetRobert from "./Pages/GetRobert";
+import CreateRobert from "./Pages/CreateRobert";
+import EquipmentList from "./Pages/EquipmentList";
+import EquipmentUpdater from "./Pages/EquipmentUpdater";
+import ListOfEmployees from "./Pages/ListOfEmployees";
 
 import "./index.css";
 import TableTest from "./Pages/TableTest";
 import FormTest from "./Pages/FormTest";
+import CreateEquipment from "./Pages/CreateEquipment";
 
 const router = createBrowserRouter([
   {
@@ -28,28 +29,36 @@ const router = createBrowserRouter([
         element: <EmployeeList />,
       },
       {
-        path: "/robert",
-        element: <GetRobert />,
+        path: "/getRobert",
+        element: <CreateRobert />,
       },
       {
         path: "/create",
         element: <EmployeeCreator />,
       },
       {
-        path: "/createEquipment",
-        element: <EquipmentCreator />
+        path: "/equipment",
+        element: <EquipmentList />,
       },
       {
-        path: "/equipment",
-        element: <EquipmentList/>
+        path: "/CreateEquipment",
+        element: <CreateEquipment />,
       },
       {
         path: "/update/:id",
         element: <EmployeeUpdater />,
       },
       {
+        path: "/EmployeeData",
+        element: <ListOfEmployees />,
+      },
+      {
+        path: "/EmployeeData/:years",
+        element: <ListOfEmployees />,
+      },
+      {
         path: "/updateEquipment/:id",
-        element: <EquimentUpdater />
+        element: <EquipmentUpdater />,
       },
       {
         path: "/table-test",

@@ -14,21 +14,19 @@ const Layout = () => {
         </li>
         
         <li>
+      
           <Link to="/create">
             <button type="button">Create Employee</button>
           </Link>
           <Link to="/equipment">
-          <button type="button">Go to Equipments</button>
-          </Link>
-          <Link to ="/createEquipment">
-            <button type="button">Create Equipment</button>
+            <button>Equipment</button>
           </Link>
         </li>
       </ul>
     </nav>
     <Outlet />
   </div>
-)};
+)}
 
 
-export default Layout;
+export default Layout

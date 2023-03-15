@@ -6,7 +6,8 @@
   const EquipmentSchema = new Schema({
     name: String,
     level: String,
-    amount: Number,
+    position: String,
+    amount: Number
   });
   
   module.exports = mongoose.model("Equipment", EquipmentSchema);

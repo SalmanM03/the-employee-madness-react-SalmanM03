@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import EquipmentForm from "../Components/EmployeeForm";
 import Loading from "../Components/Loading";
+import EquipmentForm from "./EquipmentForm";
 
 const updateEquipment = (employee) => {
   return fetch(`/api/equipment/${employee._id}`, {
@@ -14,11 +14,11 @@ const updateEquipment = (employee) => {
   }).then((res) => res.json());
 };
 
-const fetchEquipment = (id) => {
+const fetchEmployee = (id) => {
   return fetch(`/api/equipment/${id}`).then((res) => res.json());
 };
 
-const EquipmentUpdater = () => {
+const EmployeeUpdater = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ const EquipmentUpdater = () => {
 
   useEffect(() => {
     setEmployeeLoading(true);
-    fetchEquipment(id)
+    fetchEmployee(id)
       .then((employee) => {
         setEmployee(employee);
         setEmployeeLoading(false);
@@ -42,7 +42,7 @@ const EquipmentUpdater = () => {
     setUpdateLoading(true);
     updateEquipment(employee)
       .then(() => {
-        navigate("/api/equipment");         // Maybe cause for unfuncitonality
+        navigate("/equipment");
       })
       .catch((error) => {
         throw error;
@@ -66,4 +66,4 @@ const EquipmentUpdater = () => {
   );
 };
 
-export default EquipmentUpdater;
+export default EmployeeUpdater;

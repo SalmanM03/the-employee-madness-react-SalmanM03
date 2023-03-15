@@ -1,4 +1,4 @@
-const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
+const   EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -45,6 +45,16 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
           id="position"
         />
       </div>
+
+        {employee.level !== "Junior" ? <div className="control">
+        <label htmlFor="position">Years of Experience:</label>
+        <input
+          name="years"
+        />
+      </div>
+      :
+      0}
+      
 
       <div className="buttons">
         <button type="submit" disabled={disabled}>
